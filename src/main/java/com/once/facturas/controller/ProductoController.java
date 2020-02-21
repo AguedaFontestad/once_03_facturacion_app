@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -87,6 +88,30 @@ class ProductoController {
         Producto p = pr.save(producto);
         return p;
     }
+
+    /**
+     * Modificar un elemento
+     * @return
+     */
+    @PutMapping("/{id}/")
+    public Producto modificarProducto(
+        // producto
+        // id
+    ){
+        // Recuperar el elemento de id (el elemento a modificar) (p)
+
+        // Modificar ese elemento de base de datos 
+        // (a p le tenemos que cambiar los datos por los que 
+        // hemos recibido)
+
+        // Guardar p
+
+        // Devolver p
+
+
+
+    }
+
 
     @GetMapping("/hello") // Escucho al GET en /hello
     @ResponseBody // Haré un body html para devolver la página completa
