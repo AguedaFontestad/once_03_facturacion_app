@@ -1,5 +1,6 @@
 package com.once.facturas.controller;
 
+import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -10,6 +11,10 @@ import com.once.facturas.model.Producto;
 import com.once.facturas.model.ProductoRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,7 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 
 @RestController
-@RequestMapping(value = "/productos")
+@RequestMapping(value = "/api/productos")
 class ProductoController {
 
     /**
@@ -45,7 +50,21 @@ class ProductoController {
         return pr.findAll();
     }
 
-    @GetMapping("{id}/")
+    /**
+     * Borrado de un elemento
+     */
+    @DeleteMapping("/{id}/")
+    public ResponseEntity borrarProducto(
+            @PathVariable("id") Long id) {
+        try {
+            pr.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/")
     public Producto getProducto(@PathVariable("id") Long id) {
         System.out.println("valor devuelto: " + pr.findById(id));
 
@@ -63,10 +82,8 @@ class ProductoController {
     }
 
     @PostMapping("/")
-    public Producto crearProducto( 
-        @RequestBody Producto producto
-     ) {
-         System.out.println(producto);
+    public Producto crearProducto(@RequestBody Producto producto) {
+        System.out.println("el id "+ producto.getId());
         Producto p = pr.save(producto);
         return p;
     }
